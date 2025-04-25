@@ -1,0 +1,139 @@
+---
+description: creating new agents based on the cronos agent structure
+globs: 
+alwaysApply: false
+---
+# Creating New Agents
+
+Follow this template when creating new agents in the `playground/agents` directory. All new agents should maintain a consistent structure while allowing customization of specific components.
+
+## File Structure
+New agent files should be placed in:
+```bash
+playground/agents/[agentName].py
+```
+
+## Template Code
+Use this template for creating new agents, replacing `[agentName]` with your agent's name:
+
+```python
+import os
+from agno.agent import Agent
+from agno.storage.postgres import PostgresStorage
+from agno.memory.v2.memory import Memory
+from agno.memory.v2.db.postgres import PostgresMemoryDb
+
+from models.gemini import get_gemini_model
+from vectordb.pgvector import get_pgvector
+from knowledgebase.cronosKnowledge import get_cronos_knowledge
+from embedder.google import get_google_embedder
+
+db_url = os.getenv("PGVECTOR_URI", "postgresql+psycopg://ai:ai@localhost:5532/ai")
+
+def get_[agentName]_agent() -> Agent:
+    # Model for the Agent
+    model = get_gemini_model()
+
+    # Vector-Db for the Knowledge
+    embedder = get_google_embedder()
+    vectordb = get_pgvector(
+        table_name = os.getenv("[AGENTNAME]_KNOWLEDGE_TABLE", "[agentname]-knowledge"),
+        embedder=embedder,
+    )
+
+    # Knowledge for the Agent
+    knowledge = get_cronos_knowledge(vector_db=vectordb)
+
+    # Storage for the Agent
+    storage = PostgresStorage(
+        table_name = os.getenv("[AGENTNAME]_STORAGE_TABLE", "[agentname]-storage"),
+        db_url=db_url
+    )
+
+    # Memory for the Agent
+    memory = Memory(
+        model=model,
+        db=PostgresMemoryDb(
+            db_url=db_url,
+            table_name = os.getenv("[AGENTNAME]_MEMORY_TABLE", "[agentname]-memory"),
+        )
+    )
+
+    return Agent(
+        model=model,
+        name = "[AgentName] Assist",
+        description = "",  # Add agent-specific description
+        instructions = "",  # Add agent-specific instructions
+
+        knowledge=knowledge,
+        storage=storage,
+
+        # Memory
+        memory=memory,
+        enable_agentic_memory=True,
+        enable_user_memories=True,
+        add_history_to_messages=True,
+        num_history_runs=3,
+
+        add_name_to_instructions=True,
+        markdown=True,
+    )
+
+if __name__ == "__main__":
+    from dotenv import load_dotenv
+    load_dotenv()
+    agent = get_[agentName]_agent()
+    agent.print_response("Who are you?")
+```
+
+## Key Points to Remember
+
+1. **Naming Convention**:
+   - Function name should be `get_[agentName]_agent`
+   - File name should be `[agentName].py`
+   - All environment variables should be prefixed with `[AGENTNAME]_`
+
+2. **Environment Variables**:
+   - `[AGENTNAME]_KNOWLEDGE_TABLE`
+   - `[AGENTNAME]_STORAGE_TABLE`
+   - `[AGENTNAME]_MEMORY_TABLE`
+
+3. **Required Components**:
+   - Model configuration
+   - Vector database setup
+   - Knowledge base integration
+   - Storage configuration
+   - Memory setup
+
+4. **Customization Points**:
+   - Agent name
+   - Description (empty string by default)
+   - Instructions (empty string by default)
+   - Table names in environment variables
+
+5. **Default Settings**:
+   - Agentic memory enabled
+   - User memories enabled
+   - History included in messages (3 runs)
+   - Markdown formatting enabled
+   - Name added to instructions
+
+## Example Usage
+
+To create a new agent named "analyzer":
+
+1. Create file: `playground/agents/analyzer.py`
+2. Use template above, replacing:
+   - `[agentName]` with `analyzer`
+   - `[AGENTNAME]` with `ANALYZER`
+   - Add specific description and instructions
+
+Environment variables would be:
+```bash
+ANALYZER_KNOWLEDGE_TABLE=analyzer-knowledge
+ANALYZER_STORAGE_TABLE=analyzer-storage
+ANALYZER_MEMORY_TABLE=analyzer-memory
+```
+```
+
+This rule provides a clear template and guidelines for creating new agents while maintaining consistency with the existing cronos agent structure. It includes all the necessary components, naming conventions, and customization points while keeping the description and instructions empty by default as requested.
