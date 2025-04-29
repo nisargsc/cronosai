@@ -67,7 +67,7 @@ const Sessions = () => {
     null
   )
   const { getSession, getSessions } = useSessionLoader()
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { isSessionsLoading } = usePlaygroundStore()
 
   const handleScroll = () => {
@@ -95,9 +95,10 @@ const Sessions = () => {
   useEffect(() => {
     if (sessionId && agentId && selectedEndpoint && hydrated) {
       getSession(sessionId, agentId)
+      setSelectedSessionId(sessionId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated])
+  }, [sessionId, agentId, selectedEndpoint, hydrated])
 
   useEffect(() => {
     if (!selectedEndpoint || !agentId || !hasStorage) {
@@ -116,12 +117,6 @@ const Sessions = () => {
     hasStorage,
     setSessionsData
   ])
-
-  useEffect(() => {
-    if (sessionId) {
-      setSelectedSessionId(sessionId)
-    }
-  }, [sessionId])
 
   const formattedSessionsData = useMemo(() => {
     if (!sessionsData || !Array.isArray(sessionsData)) return []

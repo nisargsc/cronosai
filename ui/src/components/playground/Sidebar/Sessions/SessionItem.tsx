@@ -83,7 +83,7 @@ const SessionItem = ({
           variant="ghost"
           size="icon"
           className="transform opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100"
-          onClick={(e) => {
+          onClick={(e: any) => {
             e.stopPropagation()
             setIsDeleteModalOpen(true)
           }}

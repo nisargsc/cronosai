@@ -32,13 +32,13 @@ def get_tester_agent() -> Agent:
     )
 
     # Memory for the Agent
-    memory = Memory(
-        model=model,
-        db=PostgresMemoryDb(
-            db_url=db_url,
-            table_name = os.getenv("TESTER_MEMORY_TABLE", "tester-memory"),
-        )
-    )
+    # memory = Memory(
+    #     model=model,
+    #     db=PostgresMemoryDb(
+    #         db_url=db_url,
+    #         table_name = os.getenv("TESTER_MEMORY_TABLE", "tester-memory"),
+    #     )
+    # )
 
     return Agent(
         model=model,
@@ -90,9 +90,9 @@ def get_tester_agent() -> Agent:
         storage=storage,
 
         # Memory
-        memory=memory,
-        enable_agentic_memory=True,
-        enable_user_memories=True,
+        # memory=memory,
+        # enable_agentic_memory=True,
+        # enable_user_memories=True,
         add_history_to_messages=True,
         num_history_runs=3,
 

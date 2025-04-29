@@ -4,12 +4,22 @@ import { usePlaygroundStore } from '@/store'
 import Messages from './Messages'
 import ScrollToBottom from '@/components/playground/ChatArea/ScrollToBottom'
 import { StickToBottom } from 'use-stick-to-bottom'
+import { useEffect, useState } from 'react'
+import { useQueryState } from 'nuqs'
 
 const MessageArea = () => {
   const { messages } = usePlaygroundStore()
+  const [sessionId] = useQueryState('session')
+  const [key, setKey] = useState(Date.now())
+  
+  // Force re-render when messages change or sessionId changes
+  useEffect(() => {
+    setKey(Date.now())
+  }, [messages.length, sessionId])
 
   return (
     <StickToBottom
+      key={key}
       className="relative mb-4 flex max-h-[calc(100vh-64px)] min-h-0 flex-grow flex-col"
       resize="smooth"
       initial="smooth"
