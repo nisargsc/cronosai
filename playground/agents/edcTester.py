@@ -11,14 +11,14 @@ from embedder.google import get_google_embedder
 
 db_url=os.getenv("PGVECTOR_URI", "postgresql+psycopg://ai:ai@localhost:5532/ai")
 
-def get_tester_agent() -> Agent:
+def get_edc_tester_agent() -> Agent:
     # Model for the Agent
     model = get_gemini_model()
 
     # Vector-Db for the Knowledge
     embedder = get_google_embedder()
     vectordb = get_pgvector(
-        table_name = os.getenv("TESTER_KNOWLEDGE_TABLE", "tester-knowledge"),
+        table_name = os.getenv("EDC_TESTER_KNOWLEDGE_TABLE", "edc-tester-knowledge"),
         embedder=embedder,
     )
 
@@ -27,7 +27,7 @@ def get_tester_agent() -> Agent:
 
     # Storage for the Agent
     storage = PostgresStorage(
-        table_name = os.getenv("TESTER_STORAGE_TABLE", "tester-storage"),
+        table_name = os.getenv("EDC_TESTER_STORAGE_TABLE", "edc-tester-storage"),
         db_url=db_url,
     )
 
@@ -36,7 +36,7 @@ def get_tester_agent() -> Agent:
     #     model=model,
     #     db=PostgresMemoryDb(
     #         db_url=db_url,
-    #         table_name = os.getenv("TESTER_MEMORY_TABLE", "tester-memory"),
+    #         table_name = os.getenv("EDC_TESTER_MEMORY_TABLE", "edc-tester-memory"),
     #     )
     # )
 
@@ -44,7 +44,7 @@ def get_tester_agent() -> Agent:
         model=model,
 
         # create_default_system_message=True,
-        name = "Tester Assist",
+        name = "EDC Tester Assist",
         description = "You are a powerful, agentic AI assistant. You are an expert QA tester.",
         instructions = """
         goal:
@@ -88,7 +88,6 @@ def get_tester_agent() -> Agent:
         traceability:
             - If USER provides user stories, map testcases back to them.
             - Ask for requirements or acceptance criteria when available.
-
         """,
 
         knowledge=knowledge,
@@ -108,5 +107,5 @@ def get_tester_agent() -> Agent:
 if __name__ == "__main__":
     from dotenv import load_dotenv
     load_dotenv()
-    agent = get_tester_agent()
+    agent = get_edc_tester_agent()
     agent.print_response("Who are you?")

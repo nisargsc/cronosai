@@ -4,19 +4,22 @@ from agno.playground import Playground, serve_playground_app
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
-from agents.cronos import get_cronos_agent
-from agents.tester import get_tester_agent
-from agents.dev import get_dev_agent
+from agents.babeTester import get_babe_tester_agent
+from agents.edcTester import get_edc_tester_agent
+# from agents.cronos import get_cronos_agent
+# from agents.dev import get_dev_agent
 
-cronos_agent = get_cronos_agent()
-tester_agent = get_tester_agent()
-dev_agent = get_dev_agent()
+babe_tester_agent = get_babe_tester_agent()
+edc_tester_agent = get_edc_tester_agent()
+# cronos_agent = get_cronos_agent()
+# dev_agent = get_dev_agent()
 
 app = Playground(
     agents=[
-        tester_agent,
-        cronos_agent,
-        dev_agent,
+        babe_tester_agent,
+        edc_tester_agent,
+        # cronos_agent,
+        # dev_agent,
 ]).get_app()
 
 # Get allowed origins from environment variable or use default
