@@ -7,7 +7,7 @@ def get_gemini_model(
     system_prompt: Optional[str] = None
 ) -> Model:
     model =  Gemini(
-        id=os.getenv("GEMINI_MODEL_ID", "gemini-2.0-flash-lite"),
+        id=os.getenv("GEMINI_MODEL_ID","gemini-2.5-flash-preview-05-20"),
         temperature=float(os.getenv("GEMINI_TEMPERATURE", 0.4)),
         system_prompt=system_prompt,
     )

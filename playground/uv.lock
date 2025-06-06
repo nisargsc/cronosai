@@ -8,6 +8,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "agno" },
+    { name = "aiofiles" },
     { name = "fastapi" },
     { name = "google-genai" },
     { name = "pgvector" },
@@ -20,6 +21,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "agno", specifier = ">=1.4.1" },
+    { name = "aiofiles", specifier = ">=24.1.0" },
     { name = "fastapi", specifier = ">=0.115.12" },
     { name = "google-genai", specifier = ">=1.12.1" },
     { name = "pgvector", specifier = ">=0.4.0" },
@@ -50,6 +52,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/4c/d3/56c1e266df940c031d704957f98b3d16d00d83f5cbaea0c55dda4f54edd7/agno-1.4.1.tar.gz", hash = "sha256:8e76cea0171ab8bcb956873d33d3fadedf822f2cb28026a8a833decb3c36473d", size = 515829 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/56/be/c8e305065340bcc2b4b1caafb7e82bf9ed0d11313d7f8e492c50a9a81125/agno-1.4.1-py3-none-any.whl", hash = "sha256:a9ab17c5f809d14ee511528b094dc2d5ad3bfbb6c48980b85947ff31efa56588", size = 677093 },
+]
+
+[[package]]
+name = "aiofiles"
+version = "24.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0b/03/a88171e277e8caa88a4c77808c20ebb04ba74cc4681bf1e9416c862de237/aiofiles-24.1.0.tar.gz", hash = "sha256:22a075c9e5a3810f0c2e48f3008c94d68c65d763b9b03857924c99e57355166c", size = 30247 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a5/45/30bb92d442636f570cb5651bc661f52b610e2eec3f891a5dc3a4c3667db0/aiofiles-24.1.0-py3-none-any.whl", hash = "sha256:b4ec55f4195e3eb5d7abd1bf7e061763e864dd4954231fb8539a0ef8bb8260e5", size = 15896 },
 ]
 
 [[package]]

@@ -37,4 +37,4 @@ if __name__ == "__main__":
     embedder = get_google_embedder()
     vectordb = get_pgvector(table_name=table_name, embedder=embedder)
     knowledge = get_cronos_knowledge(vector_db=vectordb)
-    knowledge.load()
+    knowledge.load(upsert=True)
